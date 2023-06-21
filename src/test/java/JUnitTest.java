@@ -1,4 +1,5 @@
 import org.hamcrest.Matcher;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -92,11 +93,14 @@ public class JUnitTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"Termite, melting the Granite of Science : melting the Granite of",
+    @CsvSource(value = {":", "Termite, melting the Granite of Science : melting the Granite of",
             "Tango Echo Sierra Tango : Tango Echo",
             "ufo??? Flin-ging?!!!? \t alìen ufo mysti-1que much! 61 79 79 20 6c 6d 61 6f : ufo alien mysti-que much c d f"},
             delimiter = ':')
     public void ParameterizedTest(String actualText, String expectedText) {
+        Assumptions.assumeFalse(actualText == null,"Assumption failed: Source is null");
+        Assumptions.assumeFalse(actualText.isBlank(),"Assumption failed: Source is empty");
+
         ArrayList<String> expected = new ArrayList<>(List.of(expectedText.split(" ")));
         ArrayList<String> actual = repetitionExclusion.removeLetterRepeatingWords(actualText);
         assertEquals(expected, actual);
